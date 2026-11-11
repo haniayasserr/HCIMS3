@@ -105,14 +105,21 @@ const Q=[
  {lines:['handwritten header region','handwriting line 1','handwriting line 2','handwriting line 3'],lc:1,
   text:['Diffusion is the movement of particles from high to low ',{w:'concentraton?',c:'concentration'},'. An example is perfume spreading across a room.'],
   fb:'Strong definition and a clear everyday example.',kid:'Perfume in a room is a super example!'}];
-const S0=()=>({view:'student',s:'home',file:false,sub:false,t:'list',who:'anna',q:0,edit:false,
+const S0=()=>({ps:0,qi:0,sc:0,pk:-1,view:'student',s:'home',file:false,sub:false,t:'list',who:'anna',q:0,edit:false,
  fx:{},g:{anna:[8,7,9],alex:[8,7,9]},ok:{anna:[0,0,0],alex:[0,0,0]},pub:{anna:0,alex:0},note:{anna:0,alex:0},
  fl:{anna:[0,0,0],alex:[]}});
 let S=S0();
+const PS=[
+ {i:'🌿',t:'Chlorophyll and green leaves',why:'From Question 2: what makes leaves green?',qs:[{q:'What makes leaves green?',o:['Chlorophyll','Water','Sugar'],a:0},{q:'Where does photosynthesis happen?',o:['In the root','In the chloroplast','In the stem'],a:1},{q:'Plants need sunlight, water and…',o:['Salt','Oil','Carbon dioxide'],a:2}]},
+ {i:'🔋',t:'What oxygen does in cells',why:'From Question 1: how oxygen helps make energy',qs:[{q:'Which part of the cell makes energy?',o:['Mitochondria','Cell wall','Nucleus'],a:0},{q:'Cells use oxygen to break down…',o:['Glucose','Plastic','Salt'],a:0},{q:'The energy molecule is called…',o:['DNA','ATP','RNA'],a:1}]},
+ {i:'✏️',t:'Spelling: science words',why:'From Questions 1 and 3: respiration, glucose, concentration',qs:[{q:'Which spelling is right?',o:['respiraton','resperation','respiration'],a:2},{q:'Which spelling is right?',o:['glucose','glukose','glucos'],a:0},{q:'Which spelling is right?',o:['concentraton','concentration','consentration'],a:1}]}];
 const FL=['Possible plagiarism – matches online source (72%)','Handwriting differs from prior submissions','2 unanswered sub-questions'];
 const A={
  view(v){S.view=v;R()},reset(){S=S0();R()},
  go(s){S.s=s;R()},
+ sp(i){S.ps=i;S.qi=0;S.sc=0;S.pk=-1;S.s='quiz';R()},
+ ans(j){if(S.pk>=0)return;S.pk=j;if(j===PS[S.ps].qs[S.qi].a)S.sc++;R()},
+ nx(){S.qi++;S.pk=-1;if(S.qi>=3)S.s='qdone';R()},
  pick(){S.file=true;R()},retake(){S.file=false;R()},
  submit(){if(!S.file){T('No worries! Take a photo or choose a file first.');return}S.sub=true;S.s='sent';R()},
  t(m){T(m)},
@@ -138,7 +145,7 @@ function home(){
  <div class="box"><small style="font-weight:600;color:var(--mute)">Latest grade</small><div class="row" style="margin-top:6px">${g}${pill}</div>${p?`<button class="btn y" style="margin-top:10px;width:100%" onclick="A.go('fb')">⭐ See my feedback</button>`:''}</div>
  <div class="box"><b>Progress chart 📈</b><div class="chart"><i style="height:30%"></i><i style="height:45%"></i><i style="height:60%"></i><i style="height:50%"></i><i class="g" style="height:75%"></i><i style="height:65%"></i><i class="g" style="height:90%"></i></div></div>
  <h3>Practice sets 🎯</h3>
- ${[['➗','Fractions – Set 1'],['📖','Reading – Short Texts'],['✏️','Grammar – Verbs']].map(x=>`<button class="set" onclick="A.t('Practice sets are outside this prototype')"><span>${x[0]}</span>${x[1]}<em>✅ Approved</em></button>`).join('')}
+ ${p?PS.map((x,i)=>`<button class="set" onclick="A.sp(${i})"><span>${x.i}</span>${x.t}<em>✅ Approved</em></button>`).join(''):[['➗','Fractions – Set 1'],['📖','Reading – Short Texts'],['✏️','Grammar – Verbs']].map(x=>`<button class="set" onclick="A.t('Your personal practice appears after your teacher checks your exam')"><span>${x[0]}</span>${x[1]}<em>✅ Approved</em></button>`).join('')}
  <h3>Badges 🎖️</h3><div class="badges"><span>★</span><span>★</span><span class="l">🔒</span><span>★</span><span class="l">🔒</span><span class="l">🔒</span><span class="l">🔒</span></div>
  </div></div>`}
 function upload(){
@@ -158,7 +165,10 @@ function fb(){
  return`<div class="phone">${hdr('My feedback','home')}<div class="pad">
  <div class="welcome" style="justify-content:center;text-align:center"><div><div style="font-size:14px;color:var(--mute)">Science Quiz</div><h2 style="font-size:40px">${tot('alex')} / 30</h2><div class="stars">★★★★☆</div></div></div>
  ${Q.map((q,i)=>`<div class="fb"><h4><span>Question ${i+1}</span><span>${S.g.alex[i]}/10</span></h4><p>${q.kid}</p></div>`).join('')}
- <button class="big" onclick="A.t('Practice sets are outside this prototype')">🎯 Practice next</button></div></div>`}
+ <button class="big" onclick="A.go('prac')">🎯 Practice next</button></div></div>`}
+function prac(){return`<div class="phone">${hdr('My practice','home')}<div class="pad"><div class="welcome"><div><h2>Made for you ✨</h2><p>EduBot picked these from your feedback. Your teacher checked them.</p></div></div>${PS.map((p,i)=>`<button class="set" style="align-items:flex-start" onclick="A.sp(${i})"><span>${p.i}</span><div><b>${p.t}</b><div class="hint" style="text-align:left">${p.why}</div></div><em>✅</em></button>`).join('')}</div></div>`}
+function quiz(){const p=PS[S.ps],q=p.qs[S.qi],k=S.pk;return`<div class="phone">${hdr(p.t,'prac')}<div class="pad"><b style="font-size:14px">Question ${S.qi+1} of 3</b><div class="prog"><div style="width:${(S.qi+(k>=0?1:0))/3*100}%"></div></div><h2 style="margin:6px 0">${q.q}</h2>${q.o.map((o,j)=>`<button class="btn ${k>=0&&j===q.a?'g':''}" style="flex:none;${k>=0&&j===k&&j!==q.a?'background:var(--redbg);border-color:var(--red)':''}" onclick="A.ans(${j})">${o}</button>`).join('')}${k>=0?`<div class="pill ${k===q.a?'ok':''}">${k===q.a?'🎉 Yes, great job!':'No worries! The answer is “'+q.o[q.a]+'”.'}</div><button class="big" style="font-size:19px" onclick="A.nx()">${S.qi<2?'Next ➡️':'Finish 🏁'}</button>`:''}</div></div>`}
+function qdone(){return`<div class="phone">${hdr('Practice done')}<div class="pad" style="justify-content:center;text-align:center"><div style="font-size:70px">${S.sc===3?'🏆':'🌟'}</div><h2 style="margin:0">${S.sc} / 3 correct!</h2><p class="hint">${S.sc===3?'Perfect! You earned a new badge.':'Nice try! Practice again to earn a badge.'}</p><button class="big" onclick="A.go('prac')">🎯 More practice</button><button class="btn" style="flex:none" onclick="A.go('home')">🏠 Back home</button></div></div>`}
 function tList(){
  const row=w=>{const p=S.pub[w];return`<button class="item" onclick="A.open('${w}')"><span style="font-size:28px">📝</span><div><b>${NAMES[w][0]}</b><small>${NAMES[w][1]}</small></div><span class="tag ${p?'ok':''}">${p?'✅ Published':'Needs review'}</span></button>`};
  return`<div class="tw"><h1>Exams to review</h1><div class="sub">Tap an exam to check the scan, the text and the AI grade</div><div class="list">${row('anna')}${S.sub?row('alex'):''}</div>${S.sub?'':'<p class="hint">Tip: upload an exam in the student view and it will appear here.</p>'}</div>`}
@@ -180,12 +190,13 @@ function review(){
     ${fl.length?fl.map((s,i)=>`<div class="flag ${s===2?'d':s===1?'c':''}">⚠️ ${FL[i]}${s?`<small> – ${s===1?'confirmed':'dismissed'}</small>`:`<div><button class="sm y" onclick="A.flag(${i},1)">Confirm flag</button><button class="sm" onclick="A.flag(${i},2)">Dismiss</button></div>`}</div>`).join(''):'<p style="margin:0;color:var(--mute)">No red flags 🎉</p>'}
     <button class="sm b" style="width:100%" onclick="A.parent()">${S.note[w]?'📨 Parent notified':'📨 Notify parent'}</button></div>
   </div>
+  <div class="pan"><h5>🎯 AI PRACTICE SETS – made from this feedback</h5>${PS.map(p=>`<div style="font-size:14px;margin:4px 0">${p.i} <b>${p.t}</b> <small style="color:var(--mute)">– ${p.why}</small></div>`).join('')}<small style="color:var(--mute)">Approved for the student when you publish.</small></div>
   <button class="big" style="font-size:19px;padding:14px" onclick="A.publish()">📤 Publish feedback to student</button>
  </div></div></div>`}
 function R(){
  document.getElementById('vs').className=S.view==='student'?'on':'';document.getElementById('vt').className=S.view==='teacher'?'on':'';
  document.getElementById('hint').textContent=S.view==='student'?'Student flow: Upload Exam → Submit → switch to Teacher view → review and publish → come back here to see the feedback.':'Teacher flow: open an exam → fix low-confidence words → confirm all 3 grades → resolve red flags → publish.';
- document.getElementById('app').innerHTML=S.view==='student'?({home,upload,sent,fb}[S.s]()):(S.t==='list'?tList():review());
+ document.getElementById('app').innerHTML=S.view==='student'?({home,upload,sent,fb,prac,quiz,qdone}[S.s]()):(S.t==='list'?tList():review());
 }
 R();
 </script>
