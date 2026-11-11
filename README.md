@@ -1,4 +1,4 @@
-# EduBot – Interactive Prototype (Milestone 2)
+# EduBot – Interactive Prototype 
 
 Clickable front-end prototype of the EduBot workflow, covering both views:
 
