@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EduBot Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#e3f0ff;--card:#f7fbff;--ink:#1e2a4a;--mute:#4a5878;--blue:#2f80ed;--yel:#ffc93c;--yel2:#e0a800;--grn:#3dbf7a;--org:#f2994a;--red:#eb5757;--soft:#d6e7ff;--redbg:#fdeceb;--yelbg:#fff3cd;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a2f;--card:#17233d;--ink:#e8efff;--mute:#a9b7d6;--soft:#22345a;--redbg:#3a2226;--yelbg:#3b3318}}
+:root[data-theme="dark"]{--bg:#0f1a2f;--card:#17233d;--ink:#e8efff;--mute:#a9b7d6;--soft:#22345a;--redbg:#3a2226;--yelbg:#3b3318}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;font-weight:500}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.bar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;max-width:1100px;margin:0 auto}
+.seg{display:flex;background:var(--soft);border-radius:999px;padding:4px}
+.seg button{border:0;background:none;padding:8px 18px;border-radius:999px;font-weight:600}
+.seg button.on{background:var(--blue);color:#fff}
+.ghost{border:2px solid var(--blue);background:var(--card);border-radius:999px;padding:7px 14px;font-weight:600}
+.note{max-width:1100px;margin:0 auto;padding:0 16px 8px;color:var(--mute);font-size:14px}
+main{padding:8px 12px 40px}
+/* phone */
+.phone{width:375px;max-width:100%;min-height:760px;margin:0 auto;background:var(--card);border:4px solid var(--blue);border-radius:34px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.top{background:var(--blue);color:#fff;padding:14px 14px 18px;border-radius:0 0 26px 26px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.top b{font-size:18px}
+.chip{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px}
+.circ{width:34px;height:34px;border-radius:50%;border:0;background:var(--yel);color:#1e2a4a;font-weight:700;display:grid;place-items:center;font-size:16px}
+.pad{padding:12px;display:flex;flex-direction:column;gap:12px;flex:1}
+.box{border:3px solid var(--blue);border-radius:16px;padding:10px 12px;background:var(--card)}
+.welcome{background:var(--yelbg);border:3px solid var(--yel);border-radius:16px;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.welcome h2{margin:0;font-size:22px}.welcome p{margin:4px 0 0;color:var(--mute);font-size:14px}
+.big{background:var(--yel);border:3px solid var(--yel2);border-radius:16px;padding:18px;font-size:24px;font-weight:700;color:#1e2a4a;width:100%}
+.btn{border:3px solid var(--blue);background:var(--card);border-radius:14px;padding:14px 8px;font-weight:700;font-size:16px;flex:1}
+.btn.y{background:var(--yel);border-color:var(--yel2);color:#1e2a4a}
+.btn.g{background:var(--grn);border-color:var(--blue);color:#fff}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px}
+.pill{background:var(--yelbg);border-radius:12px;padding:8px 10px;font-weight:600;font-size:14px;flex:1}
+.pill.ok{background:#d4f5e2;color:#1b6b43}
+.gr{background:var(--soft);border-radius:10px;min-width:64px;text-align:center;padding:8px;font-size:22px;font-weight:700}
+.chart{display:flex;align-items:flex-end;gap:12px;height:90px;padding:6px 4px 0}
+.chart i{flex:1;border-radius:8px;background:#9ccaff;display:block}.chart i.g{background:var(--grn)}
+h3{margin:4px 2px;font-size:18px}
+.set{display:flex;align-items:center;gap:10px;border:3px solid var(--blue);border-radius:12px;padding:8px 10px;background:var(--card);width:100%;text-align:left}
+.set span:first-child{background:var(--yel);border-radius:8px;width:34px;height:34px;display:grid;place-items:center}
+.set em{margin-left:auto;color:#1b6b43;font-style:normal;font-weight:700;font-size:14px}
+.badges{display:flex;gap:8px}.badges span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:3px solid var(--yel2);background:var(--yel)}
+.badges span.l{background:var(--soft);border-color:#b9c6dc;filter:grayscale(.6)}
+.prog{height:12px;background:var(--soft);border-radius:9px;overflow:hidden}.prog div{height:100%;background:var(--grn)}
+.drop{border:3px dashed var(--blue);border-radius:12px;min-height:200px;display:grid;place-items:center;text-align:center;padding:10px;color:var(--mute);background:var(--card)}
+.paper{width:100%;background:#fff;color:#223;border-radius:6px;padding:12px;text-align:left;font-family:'Comic Sans MS','Bradley Hand',cursive;font-size:14px;line-height:1.7;transform:rotate(-1deg);box-shadow:0 2px 6px #0003}
+.hint{text-align:center;font-size:14px;color:var(--mute)}
+.fb{border:3px solid var(--blue);border-radius:14px;padding:10px 12px;background:var(--card)}
+.fb h4{margin:0 0 4px;display:flex;justify-content:space-between}.fb p{margin:0;color:var(--mute);font-size:14px}
+.stars{color:var(--yel2);letter-spacing:2px}
+/* teacher */
+.tw{max-width:1100px;margin:0 auto;background:var(--card);border:3px solid var(--blue);border-radius:22px;padding:18px}
+.tw h1{margin:0;font-size:26px}.sub{color:var(--blue);font-weight:600;margin:2px 0 12px}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:3px solid var(--blue);border-radius:14px;padding:12px 14px;background:var(--card);text-align:left;width:100%}
+.item b{font-size:17px}.item small{color:var(--mute);display:block}
+.tag{margin-left:auto;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;background:var(--yelbg)}
+.tag.ok{background:#d4f5e2;color:#1b6b43}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.pan{border:3px solid var(--blue);border-radius:14px;padding:10px 12px;background:var(--card)}
+.pan h5{margin:0 0 8px;font-size:13px;color:var(--blue)}
+.bb{border:2px dashed #7fb2f5;border-radius:6px;padding:12px 10px;margin:8px 0;background:var(--soft);font-size:12px;text-align:center;color:var(--mute)}
+.bb.lc{border:3px solid var(--org);background:var(--redbg);border-style:solid;color:var(--ink)}
+.txt{line-height:2.1;font-size:15px}
+.lcw{border:2px solid var(--org);background:var(--redbg);border-radius:6px;padding:1px 8px;color:var(--ink)}
+.fx{border:2px solid var(--grn);background:#d4f5e2;color:#1b6b43;border-radius:6px;padding:1px 8px}
+.qt{display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
+.qt button{border:3px solid var(--blue);background:var(--card);border-radius:10px;padding:5px 16px;font-weight:700}
+.qt button.on{background:var(--blue);color:#fff}
+.sm{border:2px solid var(--blue);background:var(--card);border-radius:10px;padding:8px 10px;font-weight:600;font-size:14px}
+.sm.y{background:var(--yel);border-color:var(--yel2);color:#1e2a4a}.sm.b{background:var(--blue);color:#fff}
+.flag{border:2px solid var(--red);background:var(--redbg);border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:14px}
+.flag.d{opacity:.55;text-decoration:line-through}.flag.c{border-style:double;border-width:4px}
+.flag div{margin-top:6px;display:flex;gap:6px}
+.big8{font-size:38px;font-weight:700;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;z-index:20;max-width:90vw;text-align:center}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="seg" role="tablist"><button id="vs" onclick="A.view('student')">Student view</button><button id="vt" onclick="A.view('teacher')">Teacher view</button></div>
+  <button class="ghost" onclick="A.reset()">Restart demo</button>
+</div>
+<div class="note" id="hint"></div>
+<main id="app"></main>
+<div id="toast" class="toast" hidden></div>
+<script>
+const NAMES={anna:['Anna Müller','Biology Midterm – Form 10B'],alex:['Alex','Science Quiz – Grade 5']};
+const Q=[
+ {lines:['handwritten header region','handwriting line 1','handwriting line 2','handwriting line 3','handwriting line 4','diagram region'],lc:3,
+  text:['The mitochondria is the powerhouse of the cell. It produces energy through a process called ',{w:'respiraton?',c:'respiration'},'. Oxygen is used to break down ',{w:'glukose?',c:'glucose'},' molecules and release ATP, which cells use for all activity.'],
+  fb:'Correct identification of mitochondria and ATP. Minor spelling issues. Could expand on oxygen in the electron transport chain.',kid:'You named the mitochondria and ATP. Next time, tell us what oxygen does!'},
+ {lines:['handwritten header region','handwriting line 1','handwriting line 2','diagram region'],lc:-1,
+  text:['Photosynthesis happens in the chloroplast. Plants use sunlight, water and carbon dioxide to make sugar and release oxygen.'],
+  fb:'Accurate inputs and outputs. Does not mention chlorophyll.',kid:'Great job with the inputs and outputs. Can you name what makes leaves green?'},
+ {lines:['handwritten header region','handwriting line 1','handwriting line 2','handwriting line 3'],lc:1,
+  text:['Diffusion is the movement of particles from high to low ',{w:'concentraton?',c:'concentration'},'. An example is perfume spreading across a room.'],
+  fb:'Strong definition and a clear everyday example.',kid:'Perfume in a room is a super example!'}];
+const S0=()=>({view:'student',s:'home',file:false,sub:false,t:'list',who:'anna',q:0,edit:false,
+ fx:{},g:{anna:[8,7,9],alex:[8,7,9]},ok:{anna:[0,0,0],alex:[0,0,0]},pub:{anna:0,alex:0},note:{anna:0,alex:0},
+ fl:{anna:[0,0,0],alex:[]}});
+let S=S0();
+const FL=['Possible plagiarism – matches online source (72%)','Handwriting differs from prior submissions','2 unanswered sub-questions'];
+const A={
+ view(v){S.view=v;R()},reset(){S=S0();R()},
+ go(s){S.s=s;R()},
+ pick(){S.file=true;R()},retake(){S.file=false;R()},
+ submit(){if(!S.file){T('No worries! Take a photo or choose a file first.');return}S.sub=true;S.s='sent';R()},
+ t(m){T(m)},
+ open(w){S.who=w;S.t='review';S.q=0;S.edit=false;R()},
+ tab(i){S.q=i;S.edit=false;R()},
+ fix(k){S.fx[S.who+k]=1;R()},
+ conf(){S.ok[S.who][S.q]=1;S.edit=false;T('Grade confirmed');R()},
+ chg(){S.edit=!S.edit;R()},
+ step(d){let g=S.g[S.who];g[S.q]=Math.max(0,Math.min(10,g[S.q]+d));R()},
+ flag(i,v){S.fl[S.who][i]=v;R()},
+ parent(){if(!S.fl[S.who].includes(1)){T('Confirm a flag first to notify a parent');return}S.note[S.who]=1;T('Parent notified');R()},
+ publish(){if(S.ok[S.who].includes(0)){T('Confirm all 3 grades first');return}if(S.fl[S.who].includes(0)){T('Review every red flag first');return}S.pub[S.who]=1;S.t='list';T('Published – '+NAMES[S.who][0]+' can see it now');R()}
+};
+function T(m){const e=document.getElementById('toast');e.textContent=m;e.hidden=false;clearTimeout(T.h);T.h=setTimeout(()=>e.hidden=true,2400)}
+const tot=w=>S.g[w].reduce((a,b)=>a+b,0);
+const hdr=(t,back)=>`<div class="top">${back?`<button class="circ" aria-label="Back" onclick="A.go('${back}')">⬅️</button>`:`<span class="chip">🤖 EduBot</span>`}<b>${t}</b><span class="chip" onclick="A.t('German version is not part of this prototype')" role="button" tabindex="0">EN | DE</span><button class="circ" aria-label="Help" onclick="A.t('Need help? Ask your teacher or tap Retake any time.')">?</button></div>`;
+function home(){
+ const p=S.pub.alex,g=`<div class="gr">${p?tot('alex')+'/30':'– –'}</div>`;
+ const pill=p?`<div class="pill ok">✅ Your teacher checked it!</div>`:S.sub?`<div class="pill">⏳ Waiting for your teacher</div>`:`<div class="pill">📷 Upload an exam to start</div>`;
+ return`<div class="phone">${hdr('')}<div class="pad">
+ <div class="welcome"><div><h2>Welcome, Alex! 👋</h2><p>Ready to learn something fun?</p></div><span style="font-size:44px">🤖</span></div>
+ <button class="big" onclick="A.go('upload')">📷 Upload Exam</button>
+ <div class="box"><small style="font-weight:600;color:var(--mute)">Latest grade</small><div class="row" style="margin-top:6px">${g}${pill}</div>${p?`<button class="btn y" style="margin-top:10px;width:100%" onclick="A.go('fb')">⭐ See my feedback</button>`:''}</div>
+ <div class="box"><b>Progress chart 📈</b><div class="chart"><i style="height:30%"></i><i style="height:45%"></i><i style="height:60%"></i><i style="height:50%"></i><i class="g" style="height:75%"></i><i style="height:65%"></i><i class="g" style="height:90%"></i></div></div>
+ <h3>Practice sets 🎯</h3>
+ ${[['➗','Fractions – Set 1'],['📖','Reading – Short Texts'],['✏️','Grammar – Verbs']].map(x=>`<button class="set" onclick="A.t('Practice sets are outside this prototype')"><span>${x[0]}</span>${x[1]}<em>✅ Approved</em></button>`).join('')}
+ <h3>Badges 🎖️</h3><div class="badges"><span>★</span><span>★</span><span class="l">🔒</span><span>★</span><span class="l">🔒</span><span class="l">🔒</span><span class="l">🔒</span></div>
+ </div></div>`}
+function upload(){
+ return`<div class="phone">${hdr('Upload Exam','home')}<div class="pad">
+ <b style="font-size:14px">Step 1 of 2 · Add your exam</b><div class="prog"><div style="width:50%"></div></div>
+ <div class="row"><button class="btn g" onclick="A.pick()">📷<br>Take a photo</button><button class="btn" onclick="A.pick()">📁<br>Choose a file</button></div>
+ <div class="drop">${S.file?`<div class="paper"><b>Science Quiz – Alex</b><br>1. Plants make food using sunlight…<br>2. Water moves up the stem by…<br>3. The three states of matter are…</div>`:'🖼️ Your exam picture<br>will show here'}</div>
+ <div class="hint">👀 Is the page clear, not blurry?<br>If not, tap Retake – no worries!</div>
+ <div class="row"><button class="btn" onclick="A.retake()">🔄 Retake</button><button class="btn y" onclick="A.submit()">✅ Submit</button></div>
+ <button class="btn" style="flex:none;border-color:var(--soft)" onclick="A.go('home')">❌ Cancel</button></div></div>`}
+function sent(){
+ return`<div class="phone">${hdr('Upload Exam')}<div class="pad" style="justify-content:center;text-align:center">
+ <b style="font-size:14px">Step 2 of 2 · Sent!</b><div class="prog"><div style="width:100%"></div></div>
+ <div style="font-size:70px">🎉</div><h2 style="margin:0">Great job, Alex!</h2><p class="hint">Your exam is on its way to your teacher. We’ll tell you when your feedback is ready.</p>
+ <button class="big" onclick="A.go('home')">🏠 Back home</button></div></div>`}
+function fb(){
+ return`<div class="phone">${hdr('My feedback','home')}<div class="pad">
+ <div class="welcome" style="justify-content:center;text-align:center"><div><div style="font-size:14px;color:var(--mute)">Science Quiz</div><h2 style="font-size:40px">${tot('alex')} / 30</h2><div class="stars">★★★★☆</div></div></div>
+ ${Q.map((q,i)=>`<div class="fb"><h4><span>Question ${i+1}</span><span>${S.g.alex[i]}/10</span></h4><p>${q.kid}</p></div>`).join('')}
+ <button class="big" onclick="A.t('Practice sets are outside this prototype')">🎯 Practice next</button></div></div>`}
+function tList(){
+ const row=w=>{const p=S.pub[w];return`<button class="item" onclick="A.open('${w}')"><span style="font-size:28px">📝</span><div><b>${NAMES[w][0]}</b><small>${NAMES[w][1]}</small></div><span class="tag ${p?'ok':''}">${p?'✅ Published':'Needs review'}</span></button>`};
+ return`<div class="tw"><h1>Exams to review</h1><div class="sub">Tap an exam to check the scan, the text and the AI grade</div><div class="list">${row('anna')}${S.sub?row('alex'):''}</div>${S.sub?'':'<p class="hint">Tip: upload an exam in the student view and it will appear here.</p>'}</div>`}
+function review(){
+ const w=S.who,q=Q[S.q],g=S.g[w][S.q],ok=S.ok[w][S.q];
+ const text=q.text.map((p,i)=>typeof p==='string'?p:(S.fx[w+S.q+i]?`<span class="fx">${p.c}</span>`:`<button class="lcw" onclick="A.fix(${S.q}+${i}*0+'${i}')">${p.w}</button>`)).join('');
+ const lowLeft=q.text.some((p,i)=>typeof p!=='string'&&!S.fx[w+S.q+i]);
+ const lines=q.lines.map((l,i)=>`<div class="bb ${i===q.lc&&lowLeft?'lc':''}" style="width:${i===0?100:60+((i*17)%35)}%;">[ ${l}${i===q.lc&&lowLeft?' – low confidence ⚠️':''} ]</div>`).join('');
+ const fl=S.fl[w];
+ return`<div class="tw"><div class="row" style="justify-content:space-between;flex-wrap:wrap;align-items:flex-start"><div><h1>Student: ${NAMES[w][0]}</h1><div class="sub">Exam: ${NAMES[w][1]}</div></div><div><button class="sm" onclick="S.t='list';R()">⬅️ All exams</button> <span class="tag ok">💾 Saved just now</span></div></div>
+ <div class="qt">${[0,1,2].map(i=>`<button class="${i===S.q?'on':''}" onclick="A.tab(${i})">Q${i+1}${S.ok[w][i]?' ✓':''}</button>`).join('')}<small style="color:var(--mute)">Question ${S.q+1} of 3 – tap to switch</small></div>
+ <div class="grid"><div class="pan"><h5>📄 SCANNED ANSWER – Q${S.q+1}</h5>${lines}<small style="color:var(--mute)">bounding boxes auto-detected</small></div>
+ <div style="display:flex;flex-direction:column;gap:12px">
+  <div class="pan"><h5>✏️ EXTRACTED TEXT – editable</h5><div class="txt">${text}</div>${lowLeft?`<div class="tag" style="margin-top:8px;border-radius:8px">⚠️ Orange outlined words = low confidence – tap to fix</div>`:''}</div>
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+   <div class="pan"><h5>🤖 AI GRADE AND FEEDBACK</h5><p class="big8">${g} / 10</p><small>Confidence: 82%</small><p style="font-size:14px;color:var(--mute)">${q.fb}</p>
+    ${S.edit?`<div class="row" style="align-items:center"><button class="sm" onclick="A.step(-1)" aria-label="Lower grade">−</button><b>${g}</b><button class="sm" onclick="A.step(1)" aria-label="Raise grade">+</button><button class="sm y" onclick="A.conf()">Save</button></div>`:`<div class="row"><button class="sm y" onclick="A.conf()">${ok?'✅ Confirmed':'✅ Confirm grade'}</button><button class="sm" onclick="A.chg()">✏️ Change grade</button></div>`}</div>
+   <div class="pan" style="border-color:var(--red)"><h5 style="color:var(--red)">🚩 RED FLAGS</h5>
+    ${fl.length?fl.map((s,i)=>`<div class="flag ${s===2?'d':s===1?'c':''}">⚠️ ${FL[i]}${s?`<small> – ${s===1?'confirmed':'dismissed'}</small>`:`<div><button class="sm y" onclick="A.flag(${i},1)">Confirm flag</button><button class="sm" onclick="A.flag(${i},2)">Dismiss</button></div>`}</div>`).join(''):'<p style="margin:0;color:var(--mute)">No red flags 🎉</p>'}
+    <button class="sm b" style="width:100%" onclick="A.parent()">${S.note[w]?'📨 Parent notified':'📨 Notify parent'}</button></div>
+  </div>
+  <button class="big" style="font-size:19px;padding:14px" onclick="A.publish()">📤 Publish feedback to student</button>
+ </div></div></div>`}
+function R(){
+ document.getElementById('vs').className=S.view==='student'?'on':'';document.getElementById('vt').className=S.view==='teacher'?'on':'';
+ document.getElementById('hint').textContent=S.view==='student'?'Student flow: Upload Exam → Submit → switch to Teacher view → review and publish → come back here to see the feedback.':'Teacher flow: open an exam → fix low-confidence words → confirm all 3 grades → resolve red flags → publish.';
+ document.getElementById('app').innerHTML=S.view==='student'?({home,upload,sent,fb}[S.s]()):(S.t==='list'?tList():review());
+}
+R();
+</script>
+</body>
+</html>
