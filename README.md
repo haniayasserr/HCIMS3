@@ -35,6 +35,14 @@ Open `index.html` in a browser, or serve it:
 2. Repo **Settings → Pages → Deploy from a branch → main / (root)**.
 3. Site goes live at `https://<your-username>.github.io/<repo>/`.
 
+4. The personalized feedback only appears after the teacher publishes an exam, so it won’t show on a fresh load. To see it:
+
+Student view: tap Upload Exam, then Take a photo (or Choose a file), then Submit.
+Teacher view (toggle at the top): open Alex’s exam.
+Tap each orange word to fix it. Then switch between Q1, Q2 and Q3 and tap Confirm grade on each. Alex has no red flags, so nothing else blocks publishing.
+Tap Publish feedback to student.
+Switch back to Student view. The “Latest grade” card now shows the score (24/30) and a See my feedback button. Tap it to open the feedback screen with the total score, stars, and a short comment for each question.
+
 **Netlify (fastest):** drag the folder onto https://app.netlify.com/drop.
 
 ## Notes
