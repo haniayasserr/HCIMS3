@@ -76,96 +76,48 @@ After the teacher verifies the exam, EduBot builds practice sets from the studen
 22. Open a set (for example **Chlorophyll and green leaves**). Answer the 3 questions: tap an option, read the instant feedback (green = right, "No worries! The answer is…" = wrong), then tap **Next** or **Finish**.
 23. See your score and badge message. Tap **More practice** to try another set or **Back home**.
 
----
 
-## 4. How this maps to the task analysis (HTD)
-
-The four hierarchical task designs (`EduBot_HTD.drawio` and PNGs, submitted separately) correspond to these parts:
-
-| HTD task | Walkthrough steps |
-|---|---|
-| Task 1: Student uploads an exam | Part A (1–6) |
-| Task 2: Teacher verifies extracted text | Part B (7–12) |
-| Task 3: Teacher reviews results, handles red flags, approves practice | Part C (13–17) |
-| Task 4: Student completes a required practice set | Part D (18–23) |
 
 ---
 
-## 5. Design decisions (Nielsen's heuristics)
+## Run the code on your laptop
 
-| Heuristic | Where it appears |
-|---|---|
-| Visibility of system status | Step bar (Step 1 of 2), grade pill ("Waiting for your teacher"), "Saved just now", Approved tags, ✓ on confirmed questions |
-| Match with the real world | Kid words, emoji, short text for grades 4–5 |
-| User control and freedom | Back, Retake and Cancel on the upload flow; Change grade; Dismiss on flags |
-| Consistency and standards | Same top bar everywhere; yellow = main action; green = correct/done |
-| Error prevention | Blur reminder before Submit; Publish blocked until grades are confirmed and flags resolved |
-| Recognition rather than recall | Icon + word on every button |
-| Flexibility and efficiency | Take a photo or Choose a file |
-| Minimalist design | One main action per screen |
-| Help users recover from errors | Friendly "no worries" messages, including wrong quiz answers |
-| Help | **?** button in the top bar |
 
----
 
-## 6. Known limitations (prototype scope)
+### Option 1: Download and double-click (easiest)
 
-- All data is simulated in the browser. There is no real OCR, AI model, server or login. The sample exam page, the AI grades and feedback, and the practice questions are fixed examples written for this demo. In the real product they would be generated from each student's own work.
-- The **EN | DE** toggle, the **?** help button and **Notify parent** only show a short message.
-- The prototype handles a single exam page per upload.
-- Practice sets and the practice quiz appear only after the teacher publishes (the same rule as the real workflow).
-- The page follows the device's light or dark mode.
+1. Open the repository: https://github.com/haniayasserr/HCIMS3
+2. Click the green **Code** button, then **Download ZIP**.
+3. Unzip the file. On Windows, right-click it and choose **Extract All**.
+4. Open the unzipped folder `HCIMS3-main` and double-click `index.html`. It opens in your browser and the prototype runs.
 
----
+### Option 2: Clone with Git
 
-## 7. Tech and project structure
+1. Open a terminal (Command Prompt, PowerShell or Terminal).
+2. Run:
 
-Single-file front end: HTML, CSS and vanilla JavaScript. No dependencies and no build step. The Fredoka font loads from Google Fonts (with a system fallback).
+   ```
+   git clone https://github.com/haniayasserr/HCIMS3.git
+   cd HCIMS3
+   ```
 
-```
-HCIMS3/
-├── index.html   # the entire prototype
-└── README.md    # this file
-```
+3. Open `index.html`:
+   - Windows: `start index.html`
+   - Mac: `open index.html`
+   - Linux: `xdg-open index.html`
 
----
+### Option 3: Run it as a local web server
 
-## 8. Deployment instructions
+From inside the project folder, run one of these:
 
-### Option A: GitHub Pages (used for this submission)
-1. Put `index.html` and `README.md` at the root of a GitHub repository.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**, select **main** and **/ (root)**, then **Save**.
-4. After a minute or two the site is live at `https://<your-username>.github.io/<repo>/`. For this project: https://haniayasserr.github.io/HCIMS3/
+- **Python:** `python -m http.server 8000` (on Mac/Linux: `python3 -m http.server 8000`)
+- **VS Code:** install the "Live Server" extension, right-click `index.html`, then choose **Open with Live Server**
 
-To update the site, upload or push a new `index.html`, wait a minute, then hard-refresh (Ctrl+F5).
+Then visit http://localhost:8000 in your browser. Press Ctrl+C in the terminal to stop the server.
 
-### Option B: Run locally
-Open `index.html` in any modern browser, or serve the folder:
+### Option 4: No download at all
 
-```
-python3 -m http.server 8000
-```
-then visit http://localhost:8000.
-
-### Option C: Netlify (no Git needed)
-Drag the folder onto https://app.netlify.com/drop to get a live link.
-
-### Pushing from the command line
-```
-git init
-git add .
-git commit -m "EduBot prototype"
-git branch -M main
-git remote add origin https://github.com/haniayasserr/HCIMS3.git
-git push -u origin main
-```
-
----
-
-## 9. Troubleshooting
-
-| Problem | Fix |
+Open the live version: https://haniayasserr.github.io/HCIMS3/
 |---|---|
 | The page is blank | Hard-refresh with Ctrl+F5. Make sure `index.html` is at the repository root. |
 | The site shows a 404 | Check that Pages is set to **main / (root)** and wait a minute or two after saving. |
