@@ -118,8 +118,3 @@ Then visit http://localhost:8000 in your browser. Press Ctrl+C in the terminal t
 ### Option 4: No download at all
 
 Open the live version: https://haniayasserr.github.io/HCIMS3/
-|---|---|
-| The page is blank | Hard-refresh with Ctrl+F5. Make sure `index.html` is at the repository root. |
-| The site shows a 404 | Check that Pages is set to **main / (root)** and wait a minute or two after saving. |
-| No personalized feedback or practice | The teacher must publish first: confirm Q1–Q3, resolve any red flags, then tap **Publish feedback to student**. |
-| Something looks stuck | Tap **Restart demo** to reset. |
