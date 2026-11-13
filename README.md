@@ -1,4 +1,4 @@
-# EduBot – Interactive Prototype (HCI Milestone 2)
+# EduBot – Interactive Prototype (HCI Milestone 3)
 
 EduBot turns a student's photographed handwritten exam into teacher-verified, personalized feedback and AI-generated practice. This repository is a clickable front-end prototype of the **complete workflow in both the student and teacher views**, from uploading a scanned exam to viewing personalized feedback and completing personalized practice.
 
@@ -10,7 +10,7 @@ EduBot turns a student's photographed handwritten exam into teacher-verified, pe
 
 ---
 
-## 1. Quick start for the TA (2 minutes)
+## 1. Quick start 
 
 1. Open the live prototype: https://haniayasserr.github.io/HCIMS3/ (or open `index.html` locally).
 2. Follow the full walkthrough in section 3. Both views share state, so an exam submitted by the student appears in the teacher's list, and feedback published by the teacher appears on the student's home screen.
